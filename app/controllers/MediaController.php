@@ -24,17 +24,17 @@ class MediaController extends ControllerBase {
             $uploader = $this->uploader;
             if ($type == "image") {
                 // get thumbnail small image
-                $thumb_path  =  dirname($path) . '/' .sprintf('%s-thumbnail', $fileName).'.'.$extension;
-                $uploader->ResizeToDimension(300, $path, $extension, $thumb_path);
-                $thumbnail_size = $uploader->get_image_size($thumb_path);
+                $thumbnailPath  =  dirname($path) . '/' .sprintf('%s-thumbnail', $fileName).'.'.$extension;
+                $uploader->ResizeToDimension(300, $path, $extension, $thumbnailPath);
+                $thumbnailSize = $uploader->get_image_size($thumbnailPath);
             }
 
             if ($type == "video") {
                 // get thumnail small image
-                $video_thumb_path = $uploader->videoThumnail($path, $fileName);
-                $thumb_path  =  dirname($video_thumb_path) . '/' .sprintf('%s-thumbnail', $fileName).'.jpg';
-                $uploader->ResizeToDimension(300, $video_thumb_path, 'jpg', $thumb_path);
-                $thumbnail_size = $uploader->get_image_size($thumb_path);
+                $video_thumbnailPath = $uploader->videoThumnail($path, $fileName);
+                $thumbnailPath  =  dirname($video_thumbnailPath) . '/' .sprintf('%s-thumbnail', $fileName).'.jpg';
+                $uploader->ResizeToDimension(300, $video_thumbnailPath, 'jpg', $thumbnailPath);
+                $thumbnailSize = $uploader->get_image_size($thumbnailPath);
 
                 if (filesize($path)/1024 > 5*1024) {
                     $newVideo = $uploader->resize_video($path, $fileName, $extension);
@@ -48,16 +48,14 @@ class MediaController extends ControllerBase {
                 }
             }
 
-            $phql = "INSERT INTO Medias (extension, size, origin_path, thumbnail_path, thumbnail_size, created_at, modified_at)
-                    VALUES(:extension:, :size:, :origin_path:, :thumbnail_path:, :thumbnail_size:, :created_at:, :modified_at:)";
+            $phql = "INSERT INTO Medias (extension, size, originPath, thumbnailPath, thumbnailSize)
+                    VALUES(:extension:, :size:, :originPath:, :thumbnailPath:, :thumbnailSize:)";
             $status = $this->modelsManager->executeQuery($phql, array(
                 'extension' => $extension,
                 'size' => $size,
-                'origin_path' => $path,
-                'thumbnail_path' => $thumb_path,
-                'thumbnail_size' => $thumbnail_size,
-                'created_at' => date('Y-m-d H:i:s'),
-                'modified_at' => date('Y-m-d H:i:s')
+                'originPath' => $path,
+                'thumbnailPath' => $thumbnailPath,
+                'thumbnailSize' => $thumbnailSize,
             ));
 
             // set response to json
@@ -70,8 +68,8 @@ class MediaController extends ControllerBase {
 
                 $media = $status->getModel();
                 // $media->id = $status->getModel()->id;
-                $media->full_path = BASE_URL.$status->getModel()->origin_path;
-                $media->full_thumbnail_path = BASE_URL.$status->getModel()->thumbnail_path;
+                $media->fullPath = $media->getFullPath();
+                $media->fullThumbnailPath = $media->getFullThumbnailPath();
 
                 return array('status' => 'OK', 'data' => $media);
 
@@ -110,9 +108,9 @@ class MediaController extends ControllerBase {
         foreach ($medias->items as $media) {
             $data[] = array(
                 'id' => $media->id,
-                'origin_path' => BASE_URL.$media->origin_path,
-                'thumbnail_path' => BASE_URL.$media->thumbnail_path,
-                'thumbnail_size' => $media->thumbnail_size,
+                'originPath' => BASE_URL.$media->originPath,
+                'thumbnailPath' => BASE_URL.$media->thumbnailPath,
+                'thumbnailSize' => $media->thumbnailSize,
             );
         }
 
