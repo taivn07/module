@@ -16,5 +16,17 @@ return new \Phalcon\Config(array(
         'libraryDir'     => __DIR__ . '/../../app/library/',
         'cacheDir'       => __DIR__ . '/../../app/cache/',
         'baseUri'        => '/module/',
-    )
+        'publicUrl'      => 'duythien.dev',
+    ),
+    'mail' => array(
+        'fromName' => 'Module',
+        'fromEmail' => 'taivn07@gmail.com',
+        'smtp' => array(
+            'server' => 'smtp.gmail.com',
+            'port' => 465,
+            'security' => 'ssl',
+            'username' => 'taivn07@gmail.com',
+            'password' => 'changePassHere'
+        )
+    ),
 ));

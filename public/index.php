@@ -24,6 +24,12 @@ try {
     include __DIR__ . "/../app/config/services.php";
 
     /**
+     * Register the global configuration as config
+     * print_r($this->config->application['publicUrl']);
+    */
+    $di->set('config', $config);
+
+    /**
      * Handle the request
      */
     $application = new \Phalcon\Mvc\Application($di);
@@ -48,6 +54,11 @@ try {
     $di->set('router', function(){
         require __DIR__.'/../app/config/routes.php';
         return $router;
+    });
+
+    //Mail service uses Gmail;
+    $di->set('mail', function(){
+        return new Mail();
     });
 
     echo $application->handle()->getContent();

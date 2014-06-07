@@ -23,4 +23,20 @@ $router->add(
 	)
 );
 
+$router->add(
+	'/api/register',
+	array(
+		'controller' => 'user',
+		'action' => 'register'
+	)
+);
+
+$router->add(
+	'/api/login',
+	array(
+		'controller' => 'user',
+		'action' => 'login'
+	)
+);
+
 return $router;
