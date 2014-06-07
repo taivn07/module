@@ -8,11 +8,19 @@ $router->removeExtraSlashes(true);
 
 //Define a route
 $router->add(
-    "/api/upload",
+    '/api/upload',
     array(
-        "controller" => "media",
-        "action"     => "upload",
+        'controller' => 'media',
+        'action'     => 'upload',
     )
+);
+
+$router->add(
+	"/api/medias",
+	array(
+		'controller' => 'media',
+		'action' => 'index'
+	)
 );
 
 return $router;
