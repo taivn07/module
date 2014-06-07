@@ -1,10 +1,7 @@
 <?php
+use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class MediaController extends ControllerBase {
-
-	public function indexAction() {
-		
-	}
 
 	public function uploadAction() {
         $media = $this->request->getJsonRawBody();
@@ -13,8 +10,7 @@ class MediaController extends ControllerBase {
 			$upload = $this->request->getUploadedFiles()[0];
 
             // get extension of file
-            $splitName = explode('.',$upload->getname());
-            $extension = end($splitName);
+            $extension = pathinfo($upload->getname(), PATHINFO_EXTENSION);
 
             // move tmp file to file path
             $fileName = sprintf('%s-%s', $this->common->generateRandomString(5), date('YmdHis'));
@@ -31,7 +27,6 @@ class MediaController extends ControllerBase {
                 $thumb_path  =  dirname($path) . '/' .sprintf('%s-thumbnail', $fileName).'.'.$extension;
                 $uploader->ResizeToDimension(300, $path, $extension, $thumb_path);
                 $thumbnail_size = $uploader->get_image_size($thumb_path);
-                echo $thumbnail_size;
             }
 
             if ($type == "video") {
@@ -65,23 +60,23 @@ class MediaController extends ControllerBase {
                 'modified_at' => date('Y-m-d H:i:s')
             ));
 
-            // create a response
-            $response = new Phalcon\Http\Response();
+            // set response to json
+            $this->setJsonResponse();
 
             // check if inserton was successful
             if ($status->success() == true) {
                 // change the HTTP status
-                $response->setStatusCode(201, "Created");
+                $this->response->setStatusCode(201, "Created");
 
                 $media = $status->getModel();
                 // $media->id = $status->getModel()->id;
                 $media->full_path = BASE_URL.$status->getModel()->origin_path;
                 $media->full_thumbnail_path = BASE_URL.$status->getModel()->thumbnail_path;
 
-                $response->setJsonContent(array('status' => 'OK', 'data' => $media));
+                return array('status' => 'OK', 'data' => $media);
 
             } else {
-                $response->setStatusCode(409, "Conflict");
+                $this->response->setStatusCode(409, "Conflict");
 
                 // send errors to client
                 $errors = array();
@@ -89,10 +84,38 @@ class MediaController extends ControllerBase {
                     $errors[] = $message->getMessage();
                 }
 
-                $response->setJsonContent(array('status' => 'ERROR', 'message' => $errors));
+                return array('status' => 'ERROR', 'message' => $errors);
             }
-
-            return $response;
 		}
 	}
+
+    public function indexAction() {
+        // start from 1
+        $currentPage = 1;
+
+        $phql = "SELECT * FROM Medias";
+        $result = $this->modelsManager->executeQuery($phql);
+
+        $page = new Paginator(array(
+            'data' => $result,
+            'limit' => 5,
+            'page' => $currentPage
+        ));
+        $medias = $page->getPaginate();
+
+        // set response to json
+        $this->setJsonResponse();
+
+        $data = array();
+        foreach ($medias->items as $media) {
+            $data[] = array(
+                'id' => $media->id,
+                'origin_path' => BASE_URL.$media->origin_path,
+                'thumbnail_path' => BASE_URL.$media->thumbnail_path,
+                'thumbnail_size' => $media->thumbnail_size,
+            );
+        }
+
+        return array('status' => 'OK', 'data' => $data);
+    }
 }

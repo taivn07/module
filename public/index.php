@@ -3,7 +3,8 @@
 error_reporting(E_ALL);
 // setup time zone
 date_default_timezone_set('Asia/Tokyo');
-define('BASE_URL', 'http://module.com:8080/');
+define('BASE_URL', 'http://paditech.com/');
+(new Phalcon\Debug)->listen();
 
 try {
 
@@ -39,6 +40,14 @@ try {
      */
     $di->set('common', function() {
         return new CommonComponent();
+    });
+
+    /**
+    * add routing capabilities
+    */
+    $di->set('router', function(){
+        require __DIR__.'/../app/config/routes.php';
+        return $router;
     });
 
     echo $application->handle()->getContent();

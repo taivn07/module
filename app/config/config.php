@@ -6,7 +6,7 @@ return new \Phalcon\Config(array(
         'host'        => 'localhost',
         'username'    => 'root',
         'password'    => '',
-        'dbname'      => 'module',
+        'dbname'      => 'upload',
     ),
     'application' => array(
         'controllersDir' => __DIR__ . '/../../app/controllers/',
