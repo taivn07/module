@@ -5,11 +5,13 @@ class TestController extends ControllerBase {
 		$result = array(
 			'result' => 'OK',
 			'User' => array(
-				'UserId' => 7,
-				'UserName' => 'admin',
-				'Code' => 01,
-				'IsAdmin' => true,
-				'IsAdmin1' => true
+				array(
+					'UserId' => 7,
+					'UserName' => 'admin',
+					'Code' => 01,
+					'IsAdmin' => true,
+					'IsAdmin1' => true
+				)
 			)
 		);
 
