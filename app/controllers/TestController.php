@@ -71,7 +71,54 @@ class TestController extends ControllerBase {
 							'label' => '12345'
 						)
 					)
-				)
+				),
+				array(
+					'id' => '010601',
+					'parentid' => '0106',
+					'label' =>  'Điểm đo số 8 [ 2 ]',
+				),
+				array(
+					'id' => '010101',
+					'parentid' => '0101',
+					'label' =>  'Điện lưc Quảng bình 1 [ 3 ]',
+				),
+				array(
+					'id' => '01010101',
+					'parentid' => '010101',
+					'label' =>  'Điện lưc quận 1 [ 3 ]',
+				),
+				array(
+					'id' => '0101010101',
+					'parentid' => '01010101',
+					'label' =>  'Điện lưc quận 1 [ 3 ]',
+				),
+				array(
+					'id' => '010101010101',
+					'parentid' => '0101010101',
+					'label' =>  'Cụm dân cư 1 [ 3 ]',
+				),
+				array(
+					'id' => '01010101010101',
+					'parentid' => '010101010101',
+					'label' =>  'Điểm đo 1 [ 3 ]',
+					'listcongto' => array(
+						array(
+							'id' => '01010101010101-16',
+							'parentid' => '01010101010101',
+							'label' => '123456789'
+						),
+						array(
+							'id' => '01010101010101-17',
+							'parentid' => '01010101010101',
+							'label' => '123456789'
+						),
+						array(
+							'id' => '01010101010101-18',
+							'parentid' => '01010101010101',
+							'label' => '123456789'
+						),
+					)
+				),
 			)
 		);
 		
