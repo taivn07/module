@@ -39,4 +39,12 @@ $router->add(
 	)
 );
 
+$router->add(
+	'/api/bLogin',
+	array(
+		'controller' => 'test',
+		'action' => 'login'
+	)
+);
+
 return $router;
