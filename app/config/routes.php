@@ -47,4 +47,12 @@ $router->add(
 	)
 );
 
+$router->add(
+	'/api/leftmenu',
+	array(
+		'controller' => 'test',
+		'action' => 'menu'
+	)
+);
+
 return $router;
