@@ -13,6 +13,9 @@ class TestController extends ControllerBase {
 			)
 		);
 
+		// set response to json
+        $this->setJsonResponse();
+
 		return $result;
 	}
 }
