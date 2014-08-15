@@ -90,7 +90,7 @@ class TestController extends ControllerBase {
 				array(
 					'id' => '0101010101',
 					'parentid' => '01010101',
-					'label' =>  'Điện lưc quận 1 [ 3 ]',
+					'label' =>  'Điện lưc phường 1 [ 3 ]',
 				),
 				array(
 					'id' => '010101010101',
