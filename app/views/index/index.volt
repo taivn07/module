@@ -56,7 +56,7 @@
 						break;
 					}
 				});
-				u.initPlugin(jQuery("#unityPlayer")[0], "PotatyBird.unity3d");
+				u.initPlugin(jQuery("#unityPlayer")[0], "http://paditech.com/js/PotatyBird.unity3d");
 			});
 		-->
 		</script>
